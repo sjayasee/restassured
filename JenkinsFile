@@ -1,0 +1,35 @@
+pipeline {
+    agent any
+
+    tools {
+        maven "M3"
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+	            git branch: 'main', url: 'https://github.com/sjayasee/restassured.git'
+            }
+        }
+
+
+ stage('Clean-22Dec'){
+            steps {
+                bat "mvn clean"
+            }
+            
+        }
+        stage('Test-22Dec'){
+            steps {
+                bat "mvn test"
+            }
+            
+           post{
+                always {
+                    cucumber '**/cucumber.json'
+                }
+            }
+            
+        }
+    }
+}
